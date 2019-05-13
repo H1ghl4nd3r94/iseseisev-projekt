@@ -21,12 +21,12 @@ window.cancelRequestAnimFrame = ( function() {
 
 // Initialize canvas and required variables
 var canvas = document.getElementById("canvas"),
-		ctx = canvas.getContext("2d"), // Create canvas context
-		W = window.innerWidth, // Window's width
-		H = window.innerHeight, // Window's height
-		particles = [], // Array containing particles
-		ball = {}, // Ball object
-		paddles = [2], // Array containing two paddles
+		ctx = canvas.getContext("2d"), // taust
+		W = window.innerWidth, // akna laius
+		H = window.innerHeight, // akna kõrgus
+		particles = [],
+		ball = {}, // kuul
+		paddles = [2], // labidad
 		mouse = {}, // Mouse object to store it's current position
 		points = 0, // Varialbe to store points
 		fps = 60, // Max FPS (frames per second)
