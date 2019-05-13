@@ -1,25 +1,22 @@
-# iseseisev-projekt
-Eesrakenduste arendamise iseseisva projekti lähteülesanne. 
+# iseseisev-projekt - PING PONG MÄNG Kevin Pruus
 
-Töö võib teha teha 1-4 liikmelise meeskonnana. Punkte jaotatakse vastavalt sellele, mitu liiget on meeskonnas:
-* 1 liige - max 60 punkti/inimene.
-* 2 liiget - max 40 punkti/inimene.
-* 3 liiget - max 30 punkti/inimene.
-* 4 liiget - max 20 punkti/inimene.
+Mängu koostas Kevin Pruus
+Mängus kasutatud helid ei ole autoriõigustega kaitstud.
 
-**NB! Kui meeskonnas on rohkem kui üks liige, siis peab githubis selgelt välja tulema, kes millist osa tegi, et oleks võimalik hinnata iga meeskonnaliikme individuaalset panust.**
+Ping pong mäng on loodud Eesrakenduste arendamise aine raames. Mängul on meelelahutuslik eesmärk.
+Mängu tugevaks inspiratsiooniks oli üks esimestest arvutimängudest, milleks oli "Pong".
 
-README.md fail sisaldab:
-1. suurelt rakenduse nime;
-1. autorite nimesid;
-1. rakenduse funktsionaalsuse kirjeldust;
-1. ekraanitõmmist rakendusest.
+Rakenduse funktsionaalsus:
+- Mängu suurus muutub vastavalt veebilehitseja akna suurusele.
+- Antud mäng on ühele mängjale
+- Elusid on 1
+- Mängus on kasutaja poolt hiire abil liigutatavad kaks laba, millega mängja palli põrgatama peab
+- Põrgete arvust suureneb ka skoor
+- Iga viie skoori punkti tagant kiireneb palli liikumiskiirus
+- Labadelt lendleb sädemeid, mis lendavad vastavalt palli põrke nurgale
+- Palli põrgatades kostub heli
+- Mäng on läbi kui pall lendab labast mööda
 
-Rakenduse puhul peavad olema täidetud vähemalt järgmised nõuded:
-  * rakendus lahendab tõsist probleemi või on meelelahutusliku eesmärgiga; 
-  * rakenduse idee peab olema kooskõlastatud õppejõuga;
-  * töötab võrguta olekus;
-  * responsive disain;
-  * saab kasutada "add to Home screen" funktsionaalsust.
+Mängu koostas Kevin Pruus õppematerjalide abil.
 
-Rakenduses võib kasutada teiste autorite koodi, kuid enda panus peab olema natuke enamat kui võrguta olekus töötamine. 
+Pildid antud rakendusest on nähtaval screenshots hausta all

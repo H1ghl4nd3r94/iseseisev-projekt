@@ -19,7 +19,6 @@ window.cancelRequestAnimFrame = ( function() {
 } )();
 
 
-// Initialize canvas and required variables
 var canvas = document.getElementById("canvas"),
 		ctx = canvas.getContext("2d"), // taust
 		W = window.innerWidth, // akna laius
@@ -27,53 +26,50 @@ var canvas = document.getElementById("canvas"),
 		particles = [],
 		ball = {}, // kuul
 		paddles = [2], // labidad
-		mouse = {}, // Mouse object to store it's current position
-		points = 0, // Varialbe to store points
-		fps = 60, // Max FPS (frames per second)
-		particlesCount = 20, // Number of sparks when ball strikes the paddle
-		flag = 0, // Flag variable which is changed on collision
-		particlePos = {}, // Object to contain the position of collision
-		multipler = 1, // Varialbe to control the direction of sparks
-		startBtn = {}, // Start button object
-		restartBtn = {}, // Restart button object
-		over = 0, // flag varialbe, cahnged when the game is over
-		init, // variable to initialize animation
+		mouse = {}, // hiire liikumine
+		points = 0, // punktid
+		fps = 60,
+		particlesCount = 20, // sädemete arv
+		flag = 0, // lipu muutuja
+		particlePos = {},
+		multipler = 1, // sädemete suuna muutmiseks
+		startBtn = {}, // stardi nupp
+		restartBtn = {}, // restart
+		over = 0,
+		init, // animatsioonide käivitamiseks
 		paddleHit;
 
-// Add mousemove and mousedown events to the canvas
+// hiire liigutused mängu plaadile
 canvas.addEventListener("mousemove", trackPosition, true);
 canvas.addEventListener("mousedown", btnClick, true);
 
-// Initialise the collision sound
+// tekita kokkupuutel labadega heli
 collision = document.getElementById("collide");
 
-// Set the canvas's height and width to full screen
+// Täisekraan vastavalt akna suurusele
 canvas.width = W;
 canvas.height = H;
 
-// Function to paint canvas
+// valge taust
 function paintCanvas() {
-	ctx.fillStyle = "white";
+	ctx.fillStyle = "gray";
 	ctx.fillRect(0, 0, W, H);
 }
 
-// Function for creating paddles
+// Funktsioon mille abil luuakse labad
 function Paddle(pos) {
-	// Height and width
 	this.h = 10;
 	this.w = 100;
 
-	// Paddle's position
+	// Labade asukoht
 	this.x = W/2 - this.w/2;
 	this.y = (pos == "top") ? 0 : H - this.h;
 
 }
-
-// Push two new paddles into the paddles[] array
 paddles.push(new Paddle("bottom"));
 paddles.push(new Paddle("top"));
 
-// Ball object
+// Pall
 ball = {
 	x: 50,
 	y: 50,
@@ -81,8 +77,6 @@ ball = {
 	c: "black",
 	vx: 4,
 	vy: 8,
-
-	// Function for drawing ball on canvas
 	draw: function() {
 		ctx.beginPath();
 		ctx.fillStyle = this.c;
@@ -90,9 +84,7 @@ ball = {
 		ctx.fill();
 	}
 };
-
-
-// Start Button object
+// Start nupp
 startBtn = {
 	w: 150,
 	h: 50,
@@ -112,7 +104,7 @@ startBtn = {
 	}
 };
 
-// Restart Button object
+// Restart nupp
 restartBtn = {
 	w: 200,
 	h: 50,
@@ -132,7 +124,7 @@ restartBtn = {
 	}
 };
 
-// Function for creating particles object
+// Functioon sädemete jaoks
 function createParticles(x, y, m) {
 	this.x = x || 0;
 	this.y = y || 0;
@@ -143,7 +135,7 @@ function createParticles(x, y, m) {
 	this.vy = m * Math.random()*1.5;
 }
 
-// Draw everything on canvas
+// kõik mänguplaadile
 function draw() {
 	paintCanvas();
 	for(var i = 0; i < paddles.length; i++) {
@@ -156,8 +148,7 @@ function draw() {
 	ball.draw();
 	update();
 }
-
-// Function to increase speed after every 5 points
+// Funktsioon, mis muudab palli kiiruse iga 5 punkti tagant kiiremaks
 function increaseSpd() {
 	if(points % 4 == 0) {
 		if(Math.abs(ball.vx) < 15) {
@@ -167,7 +158,7 @@ function increaseSpd() {
 	}
 }
 
-// Track the position of mouse cursor
+// Jälgi hiirekursori liikumist
 function trackPosition(e) {
 	mouse.x = e.pageX;
 	mouse.y = e.pageY;
@@ -176,11 +167,8 @@ function trackPosition(e) {
 // Function to update positions, score and everything.
 // Basically, the main game logic is defined here
 function update() {
-
-	// Update scores
 	updateScore();
-
-	// Move the paddles on mouse move
+	// seo hiire liigutused labade liikumisega
 	if(mouse.x && mouse.y) {
 		for(var i = 1; i < paddles.length; i++) {
 			p = paddles[i];
@@ -188,32 +176,22 @@ function update() {
 		}
 	}
 
-	// Move the ball
+	// Palli liigutamiseks
 	ball.x += ball.vx;
 	ball.y += ball.vy;
-
-	// Collision with paddles
+	// Kokkupuutel labadega
 	p1 = paddles[1];
 	p2 = paddles[2];
 
-	// If the ball strikes with paddles,
-	// invert the y-velocity vector of ball,
-	// increment the points, play the collision sound,
-	// save collision's position so that sparks can be
-	// emitted from that position, set the flag variable,
-	// and change the multiplier
 	if(collides(ball, p1)) {
 		collideAction(ball, p1);
 	}
-
-
 	else if(collides(ball, p2)) {
 		collideAction(ball, p2);
 	}
 
 	else {
-		// Collide with walls, If the ball hits the top/bottom,
-		// walls, run gameOver() function
+		// Jooksuta gameOver() funktsiooni kui pall lendab üles või alla serva pihta
 		if(ball.y + ball.r > H) {
 			ball.y = H - ball.r;
 			gameOver();
@@ -224,8 +202,7 @@ function update() {
 			gameOver();
 		}
 
-		// If ball strikes the vertical walls, invert the
-		// x-velocity vector of ball
+		// Muuda palli suunda, kui pall tabab külgmisi seinu
 		if(ball.x + ball.r > W) {
 			ball.vx = -ball.vx;
 			ball.x = W - ball.r;
@@ -239,22 +216,21 @@ function update() {
 
 
 
-	// If flag is set, push the particles
+	// lipp seatud siis näita sädemeid
 	if(flag == 1) {
 		for(var k = 0; k < particlesCount; k++) {
 			particles.push(new createParticles(particlePos.x, particlePos.y, multiplier));
 		}
 	}
 
-	// Emit particles/sparks
+	// Lennuta sädemeid
 	emitParticles();
 
-	// reset flag
+	// reset lipule
 	flag = 0;
 }
 
-//Function to check collision between ball and one of
-//the paddles
+//Funktsioon, mis kontrollib kokkupõrget
 function collides(b, p) {
 	if(b.x + ball.r >= p.x && b.x - ball.r <=p.x + p.w) {
 		if(b.y >= (p.y - p.h) && p.y > 0){
@@ -271,7 +247,7 @@ function collides(b, p) {
 	}
 }
 
-//Do this when collides == true
+// collides == true
 function collideAction(ball, p) {
 	ball.vy = -ball.vy;
 
@@ -286,7 +262,7 @@ function collideAction(ball, p) {
 		particlePos.y = ball.y - ball.r;
 		multiplier = 1;
 	}
-
+// Punktide kasvades kasvab ka kiirus
 	points++;
 	increaseSpd();
 
@@ -302,7 +278,7 @@ function collideAction(ball, p) {
 	flag = 1;
 }
 
-// Function for emitting particles
+// Funktsioon, mis paneb sädemed lendama
 function emitParticles() {
 	for(var j = 0; j < particles.length; j++) {
 		par = particles[j];
@@ -317,13 +293,12 @@ function emitParticles() {
 		par.x += par.vx;
 		par.y += par.vy;
 
-		// Reduce radius so that the particles die after a few seconds
+		// Sädemete kiireks kaotamiseks
 		par.radius = Math.max(par.radius - 0.05, 0.0);
 
 	}
 }
-
-// Function for updating score
+// Funktsioon tulemuse jaoks
 function updateScore() {
 	ctx.fillStlye = "white";
 	ctx.font = "16px Arial, sans-serif";
@@ -332,7 +307,7 @@ function updateScore() {
 	ctx.fillText("Teie punktid: " + points, 20, 20 );
 }
 
-// Function to run when the game overs
+// Functioon, mis ilmutab ennast kui mäng on läbi
 function gameOver() {
 	ctx.fillStlye = "white";
 	ctx.font = "20px Arial, sans-serif";
@@ -340,44 +315,44 @@ function gameOver() {
 	ctx.textBaseline = "middle";
 	ctx.fillText("Mäng läbi, saite "+points+" punkti!", W/2, H/2 + 25 );
 
-	// Stop the Animation
+	// Peata animatsioonid
 	cancelRequestAnimFrame(init);
 
-	// Set the over flag
+	// Sea lipp
 	over = 1;
 
-	// Show the restart button
+	// restardi nupp
 	restartBtn.draw();
 }
 
-// Function for running the whole animation
+// Functioon animatsiooni jooksutamiseks
 function animloop() {
 	init = requestAnimFrame(animloop);
 	draw();
 }
 
-// Function to execute at startup
+// Function käivituseks
 function startScreen() {
 	draw();
 	startBtn.draw();
 }
 
-// On button click (Restart and start)
+// On button click (Restart ja start)
 function btnClick(e) {
 
-	// Variables for storing mouse position on click
+	// muutujad, et salvestada hiire asukoht kui klõpsatakse hiirega
 	var mx = e.pageX,
 			my = e.pageY;
 
-	// Click start button
+	// Start nupule vajutades...
 	if(mx >= startBtn.x && mx <= startBtn.x + startBtn.w) {
 		animloop();
 
-		// Delete the start button after clicking it
+		// start nupp kaob peale selle vajutamist
 		startBtn = {};
 	}
 
-	// If the game is over, and the restart button is clicked
+	// juhul kui peale mängu soovitakse uuesti mängida - restart
 	if(over == 1) {
 		if(mx >= restartBtn.x && mx <= restartBtn.x + restartBtn.w) {
 			ball.x = 20;
@@ -391,6 +366,4 @@ function btnClick(e) {
 		}
 	}
 }
-
-// Show the start screen
 startScreen();
